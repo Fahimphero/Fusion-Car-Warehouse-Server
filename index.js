@@ -38,23 +38,13 @@ async function run() {
             res.send(product);
         })
 
-        // update quantity
-//         app.put('/products/:id',async(req,res)=>{
-//         const id = req.params.id;
-//         const updatedQuantity = req.body;
-//         const filter = { _id: ObjectId(id) };
-//         const options ={upsert : true};
-//         const updatedDoc ={
-//             $set:{
-//                 userName: updatedQuantity.userName;
-//                 quantity: updatedQuantity.decreaseQuantity;
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productCollection.deleteOne(query);
+            res.send(result);
+        })
 
-//             }
-//         };
-// const result = await productCollection.updateOne(filter,updatedDoc,options)
-// res.send(result);
-
-//         })
 
 
 
