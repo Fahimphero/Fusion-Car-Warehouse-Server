@@ -37,7 +37,7 @@ async function run() {
             const product = await productCollection.findOne(query);
             res.send(product);
         })
-
+        // Delete api
         app.delete('/products/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -45,7 +45,12 @@ async function run() {
             res.send(result);
         })
 
-
+        // Post Api
+        app.post('/products', async (req, res) => {
+            const newProduct = req.body;
+            const result = await productCollection.insertOne(newProduct);
+            res.send(result);
+        })
 
 
     }
