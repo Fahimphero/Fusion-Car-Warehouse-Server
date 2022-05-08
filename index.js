@@ -24,9 +24,18 @@ async function run() {
     try {
         await client.connect();
         const productCollection = client.db("fusionWarehouse").collection("Products");
+        const clientProductCollection = client.db("fusionWarehouse").collection("Client Products");
+
         app.get('/products', async (req, res) => {
             const query = {};
             const cursor = productCollection.find(query);
+            const products = await cursor.toArray();
+            res.send(products);
+        })
+        // Client Products
+        app.get('/clientproducts', async (req, res) => {
+            const query = {};
+            const cursor = clientProductCollection.find(query);
             const products = await cursor.toArray();
             res.send(products);
         })
@@ -51,6 +60,23 @@ async function run() {
             const result = await productCollection.insertOne(newProduct);
             res.send(result);
         })
+
+        //Client Post Api
+        app.post('/clientproducts', async (req, res) => {
+            const newProduct = req.body;
+            const result = await clientProductCollection.insertOne(newProduct);
+            res.send(result);
+        })
+
+        // Client Delete api
+        app.delete('/clientproducts/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await clientProductCollection.deleteOne(query);
+            res.send(result);
+        })
+
+
         // Put api
         app.put('/products/:id', async (req, res) => {
             const id = req.params.id;
